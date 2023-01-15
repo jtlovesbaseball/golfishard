@@ -28,6 +28,26 @@ class Course(object):
         save_path = osp.join('data', 'courses', self.savename)
         return save_path
 
+    def play(self, golfer, scores, date, ttt=None, comments=""):
+        """
+        Hey this one sounds fun lets play golf
+
+        :param golfer: name of golfer
+        :param scores: list of scores (NO LYING*!)
+        :param date: python datetime object
+        :param ttt: tee time temperature
+        :param comments: anything you'd like to add?
+        :return: a line, like it's a csv
+        """
+        scorestr = ""
+        for score, hole in zip(scores, self.holes):
+            scorestr += "%d," % score
+        scorestr = scorestr[:-1]
+        timestr = date.strftime('%A_%m_%d_%Y_%H:%M')
+        course_savename = self.savename
+        retstr = "%s,%s,%s,%s,%d,%s\n" % (golfer, course_savename, scorestr, timestr, ttt, comments if len(comments) > 0 else "none")
+        return retstr
+
     def __str__(self):
         retstr = """Course name: %s
 Length: %d holes
